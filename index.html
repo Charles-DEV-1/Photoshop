@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photography Studio Demo</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap");
+
+    :root {
+      --bg: #fcfbf8;
+      --bg-soft: #f5f1e8;
+      --panel: rgba(255, 255, 255, 0.9);
+      --panel-strong: #f3e4c9;
+      --text: #253126;
+      --muted: #6f7467;
+      --gold: #c9b69b;
+      --gold-soft: #ffffff;
+      --accent: #7d9574;
+      --accent-deep: #5f7358;
+      --line: rgba(125, 149, 116, 0.12);
+      --shadow: 0 24px 60px rgba(144, 131, 113, 0.14);
+      --shadow-soft: 0 14px 36px rgba(144, 131, 113, 0.1);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --container: min(1180px, calc(100% - 2rem));
+      --transition: 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Manrope", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(125, 149, 116, 0.14), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(201, 182, 155, 0.18), transparent 20%),
+        linear-gradient(180deg, #ffffff 0%, #faf5e9 45%, #f7f3ea 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .container {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 5.5rem 0;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .section.alt {
+      background: linear-gradient(180deg, rgba(243, 228, 201, 0.5), rgba(247, 243, 234, 0.8));
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin: 0 auto 2.8rem;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 0.5rem 0.95rem;
+      margin-bottom: 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125, 149, 116, 0.18);
+      background: rgba(125, 149, 116, 0.08);
+      color: var(--accent-deep);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      font-family: "Cormorant Garamond", serif;
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 9vw, 7rem);
+    }
+
+    h2 {
+      font-size: clamp(2.6rem, 5vw, 4.4rem);
+      margin-bottom: 0.9rem;
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      margin-bottom: 0.55rem;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 1rem 0 0;
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(243, 228, 201, 0.72);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffffff, #e7d6bb, #b8c7b0);
+      color: #243125;
+      font-weight: 800;
+      box-shadow: 0 12px 26px rgba(163, 179, 152, 0.2);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 1rem;
+      color: var(--accent-deep);
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      transition: color var(--transition), transform var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-deep);
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      padding: 1.2rem 0 2.5rem;
+    }
+
+    .hero-shell {
+      min-height: 92vh;
+      display: grid;
+      align-items: end;
+      padding: clamp(2rem, 4vw, 3rem);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(180deg, rgba(27, 34, 24, 0.12) 0%, rgba(31, 40, 30, 0.44) 58%, rgba(26, 32, 24, 0.7) 100%),
+        url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+    }
+
+    .hero-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 78% 18%, rgba(201, 182, 155, 0.18), transparent 24%),
+        linear-gradient(90deg, rgba(31, 40, 30, 0.34), transparent 58%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      padding: 1.4rem 1.5rem;
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .hero p {
+      max-width: 42ch;
+      margin-top: 0.85rem;
+      font-size: 1rem;
+      color: #f6f3ed;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #90a786, #7d9574, #6c8564);
+      color: #243125;
+      box-shadow: 0 18px 34px rgba(125, 149, 116, 0.24);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 42px rgba(125, 149, 116, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(201, 182, 155, 0.28);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .about-card {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2.2rem;
+      border-radius: var(--radius-xl);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(243, 228, 201, 0.72));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .service-card,
+    .testimonial {
+      padding: 1.45rem;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 228, 201, 0.78));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .service-card:hover,
+    .testimonial:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+      border-color: rgba(125, 149, 116, 0.2);
+    }
+
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 1rem;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ffffff, #e7d6bb, #b8c7b0);
+      color: #243125;
+      font-weight: 800;
+      box-shadow: 0 12px 26px rgba(125, 149, 116, 0.18);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+      grid-auto-flow: dense;
+    }
+
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(201, 182, 155, 0.22);
+      box-shadow: var(--shadow-soft);
+      background: var(--panel-strong);
+    }
+
+    .portfolio-item img {
+      height: 100%;
+      min-height: 280px;
+      transition: transform 0.6s ease;
+    }
+
+    .portfolio-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .portfolio-item::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(34, 42, 31, 0.58) 100%);
+    }
+
+    .portfolio-item span {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 1;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .portfolio-item:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+    .portfolio-item:nth-child(2) { grid-column: span 3; }
+    .portfolio-item:nth-child(3) { grid-column: span 4; grid-row: span 2; }
+    .portfolio-item:nth-child(4) { grid-column: span 4; }
+    .portfolio-item:nth-child(5) { grid-column: span 4; grid-row: span 2; }
+    .portfolio-item:nth-child(6) { grid-column: span 4; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .stars {
+      color: #b89b76;
+      letter-spacing: 0.18em;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .testimonial strong {
+      display: block;
+      margin-top: 1rem;
+      color: var(--accent-deep);
+      font-size: 0.95rem;
+    }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.3rem;
+      align-items: stretch;
+    }
+
+    .contact-card {
+      padding: 2rem;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(243, 228, 201, 0.82));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-card p {
+      margin-top: 1rem;
+      margin-bottom: 1.8rem;
+      max-width: 54ch;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-visual {
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-visual img {
+      height: 100%;
+      min-height: 420px;
+    }
+
+    footer {
+      padding: 2rem 0 2.6rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.94rem;
+      background: linear-gradient(180deg, rgba(243, 228, 201, 0.7), rgba(232, 225, 211, 0.78));
+      border-top: 1px solid rgba(201, 182, 155, 0.26);
+    }
+
+    @media (max-width: 1024px) {
+      .services-grid,
+      .testimonials-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .contact-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-item:nth-child(n) {
+        grid-column: span 6;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        position: static;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 28px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.8rem;
+      }
+
+      .section {
+        padding: 4rem 0;
+      }
+
+      .hero-shell {
+        min-height: auto;
+      }
+
+      .hero-actions,
+      .contact-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .services-grid,
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-item:nth-child(n) {
+        grid-column: auto;
+      }
+
+      .contact-visual img {
+        min-height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <nav class="nav">
+        <a href="#top" class="brand">
+          <span class="brand-mark">C</span>
+          <span class="brand-text">
+            <strong>Demo</strong>
+            <span>Photography studio demo template</span>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#testimonials">Reviews</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-shell">
+          <div class="hero-content">
+            <span class="eyebrow">Photography Studio Demo</span>
+            <h1>Capturing Moments That Matter</h1>
+            <p>Professional photography for weddings, portraits, and events.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://wa.me/demo?text=Demo%20WhatsApp%20Link" target="_blank" rel="noopener noreferrer">Book via WhatsApp</a>
+              <a class="btn btn-secondary" href="#portfolio">View Portfolio</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="portfolio">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Portfolio</span>
+          <h2>Selected work and visual stories.</h2>
+          <p>A clean asymmetrical gallery designed to let the photography lead.</p>
+        </div>
+        <div class="portfolio-grid">
+          <figure class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80" alt="Wedding couple">
+            <span>Wedding Stories</span>
+          </figure>
+          <figure class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80" alt="Portrait session">
+            <span>Portrait Sessions</span>
+          </figure>
+          <figure class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80" alt="Bride portrait">
+            <span>Elegant Details</span>
+          </figure>
+          <figure class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1000&q=80" alt="Event photography">
+            <span>Event Coverage</span>
+          </figure>
+          <figure class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80" alt="Studio portrait">
+            <span>Studio Portraits</span>
+          </figure>
+          <figure class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=80" alt="Lifestyle photo">
+            <span>Editorial Lifestyle</span>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="about">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">About</span>
+          <h2>Elegant photography with a natural, refined point of view.</h2>
+        </div>
+        <div class="about-card">
+          <p>This demo template is built to showcase photography in a calm, minimal, portfolio-first way. Replace this short paragraph with the studio story, approach, and booking details when needed.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Services</span>
+          <h2>Photography for portraits, weddings, events, and studio work.</h2>
+        </div>
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="service-icon">01</div>
+            <h3>Portrait Photography</h3>
+            <p>Refined sessions with clean direction and polished final edits.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon">02</div>
+            <h3>Wedding Photography</h3>
+            <p>Elegant storytelling for intimate moments and celebration details.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon">03</div>
+            <h3>Event Coverage</h3>
+            <p>Professional event imagery with a calm editorial feel.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon">04</div>
+            <h3>Studio Sessions</h3>
+            <p>Controlled studio photography for personal and creative shoots.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="testimonials">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Testimonials</span>
+          <h2>Trusted by clients who value quality, emotion, and detail.</h2>
+        </div>
+        <div class="testimonials-grid">
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>"The photos were absolutely stunning. Every image felt elegant, emotional, and beautifully captured."</p>
+            <strong>Wedding Client</strong>
+          </article>
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>"Professional from start to finish. The portrait session felt relaxed, and the final edits were incredible."</p>
+            <strong>Portrait Client</strong>
+          </article>
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>"They captured our event perfectly. The gallery looked polished, modern, and full of meaningful moments."</p>
+            <strong>Event Host</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container contact-wrap">
+        <div class="contact-card">
+          <span class="eyebrow">Contact</span>
+          <h2>Let’s create photographs you’ll want to keep forever.</h2>
+          <p>Reach out to book a portrait session, wedding date, studio shoot, or event coverage. We’ll help you plan a premium photography experience with clarity, style, and care.</p>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="https://wa.me/demo?text=Demo%20WhatsApp%20Link" target="_blank" rel="noopener noreferrer">Book via WhatsApp</a>
+            <a class="btn btn-secondary" href="https://instagram.com/demo-template-placeholder" target="_blank" rel="noopener noreferrer">Visit Instagram</a>
+          </div>
+        </div>
+        <div class="contact-visual">
+          <img src="https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=1200&q=80" alt="Professional camera setup">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Demo. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
