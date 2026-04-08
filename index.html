@@ -1,1398 +1,2010 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chroma Studio | Premium Photography</title>
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
-
-    :root {
-      --bg: #f6f1e9;
-      --bg-soft: #fbf7f1;
-      --bg-card: rgba(255, 255, 255, 0.88);
-      --surface: #fffdf9;
-      --surface-strong: #f2e7d8;
-      --text: #1f1914;
-      --muted: #665f58;
-      --line: rgba(104, 87, 72, 0.12);
-      --accent: #cf9b5b;
-      --accent-deep: #9b6736;
-      --accent-dark: #241a12;
-      --green: #25d366;
-      --green-deep: #1cad52;
-      --shadow-lg: 0 30px 70px rgba(49, 34, 22, 0.15);
-      --shadow-md: 0 18px 40px rgba(49, 34, 22, 0.12);
-      --shadow-sm: 0 10px 24px rgba(49, 34, 22, 0.08);
-      --radius-xl: 36px;
-      --radius-lg: 26px;
-      --radius-md: 20px;
-      --radius-sm: 16px;
-      --container: min(1200px, calc(100% - 2rem));
-      --transition: 0.35s ease;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Manrope", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(207, 155, 91, 0.12), transparent 24%),
-        radial-gradient(circle at bottom right, rgba(36, 26, 18, 0.08), transparent 22%),
-        linear-gradient(180deg, #fdf9f3 0%, #f7f1e7 52%, #f4ede3 100%);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    body.loaded .hero-copy,
-    body.loaded .hero-trust,
-    body.loaded .hero-badge {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-    }
-
-    button,
-    input,
-    textarea {
-      font: inherit;
-    }
-
-    .container {
-      width: var(--container);
-      margin: 0 auto;
-    }
-
-    .section {
-      padding: 6.5rem 0;
-      position: relative;
-    }
-
-    .section.alt {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(242, 231, 216, 0.68));
-    }
-
-    .section-head {
-      max-width: 760px;
-      margin: 0 auto 3.2rem;
-      text-align: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      padding: 0.52rem 0.95rem;
-      margin-bottom: 1.2rem;
-      border-radius: 999px;
-      border: 1px solid rgba(207, 155, 91, 0.24);
-      background: rgba(255, 250, 244, 0.82);
-      color: var(--accent-deep);
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), #f2c792);
-      box-shadow: 0 0 0 6px rgba(207, 155, 91, 0.12);
-    }
-
-    h1,
-    h2,
-    h3 {
-      font-family: "Cormorant Garamond", serif;
-      line-height: 0.94;
-      letter-spacing: -0.03em;
-    }
-
-    h1 {
-      font-size: clamp(4rem, 8vw, 7rem);
-      color: #fff8f1;
-      text-wrap: balance;
-    }
-
-    h2 {
-      font-size: clamp(2.9rem, 5vw, 4.7rem);
-      margin-bottom: 1rem;
-      text-wrap: balance;
-    }
-
-    h3 {
-      font-size: 2rem;
-      margin-bottom: 0.55rem;
-    }
-
-    p {
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      padding: 1rem 0 0;
-      transition: padding var(--transition);
-    }
-
-    .topbar.scrolled {
-      padding-top: 0.45rem;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1rem 1.25rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(29, 22, 18, 0.56);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 18px 36px rgba(17, 12, 8, 0.18);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 50px;
-      height: 50px;
-      display: grid;
-      place-items: center;
-      border-radius: 18px;
-      background: linear-gradient(145deg, #f5d5aa, #cf9b5b, #8c5a2c);
-      color: #fff9f0;
-      font-size: 1.05rem;
-      font-weight: 800;
-      box-shadow: 0 14px 30px rgba(207, 155, 91, 0.28);
-    }
-
-    .brand-text strong {
-      display: block;
-      color: #fff8f1;
-      font-size: 1rem;
-      letter-spacing: 0.02em;
-    }
-
-    .brand-text span {
-      color: rgba(255, 244, 234, 0.72);
-      font-size: 0.84rem;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      color: rgba(255, 244, 234, 0.88);
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      transition: color var(--transition), transform var(--transition);
-    }
-
-    .nav-links a:hover,
-    .nav-links a:focus-visible {
-      color: #fff;
-      transform: translateY(-2px);
-    }
-
-    .nav-cta {
-      padding: 0.82rem 1.2rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #f2c792, var(--accent), #b57a41);
-      color: var(--accent-dark);
-      font-weight: 800;
-      box-shadow: 0 12px 28px rgba(207, 155, 91, 0.28);
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-
-    .nav-cta:hover,
-    .nav-cta:focus-visible {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 18px 34px rgba(207, 155, 91, 0.36);
-    }
-
-    .hero {
-      padding: 1rem 0 2rem;
-    }
-
-    .hero-shell {
-      min-height: calc(100vh - 2rem);
-      display: grid;
-      align-items: end;
-      padding: clamp(1.8rem, 4vw, 3rem);
-      border-radius: var(--radius-xl);
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow-lg);
-      isolation: isolate;
-      background:
-        linear-gradient(115deg, rgba(11, 8, 6, 0.8) 10%, rgba(16, 11, 8, 0.52) 46%, rgba(18, 13, 9, 0.72) 100%),
-        url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1800&q=80") center/cover no-repeat;
-    }
-
-    .hero-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 78% 22%, rgba(242, 199, 146, 0.18), transparent 24%),
-        linear-gradient(180deg, rgba(8, 6, 5, 0.12), rgba(8, 6, 5, 0.24) 35%, rgba(8, 6, 5, 0.72) 100%);
-      z-index: -1;
-    }
-
-    .hero-shell::after {
-      content: "";
-      position: absolute;
-      inset: auto 1.5rem 1.5rem auto;
-      width: min(32vw, 320px);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(242, 199, 146, 0.12), transparent 68%);
-      filter: blur(8px);
-      pointer-events: none;
-    }
-
-    .hero-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.65fr);
-      align-items: end;
-      gap: 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-copy,
-    .hero-trust,
-    .hero-badge {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.9s ease, transform 0.9s ease;
-    }
-
-    .hero-copy {
-      max-width: 720px;
-      transition-delay: 0.08s;
-    }
-
-    .hero-copy p {
-      max-width: 42ch;
-      margin-top: 1.25rem;
-      color: rgba(255, 245, 236, 0.84);
-      font-size: 1.14rem;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.65rem;
-      margin-bottom: 1.6rem;
-      padding: 0.7rem 1rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: #f9ecde;
-      font-size: 0.84rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      backdrop-filter: blur(8px);
-    }
-
-    .hero-badge svg {
-      width: 16px;
-      height: 16px;
-      fill: #f2c792;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 2.2rem;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.7rem;
-      padding: 1.05rem 1.55rem;
-      border: 0;
-      border-radius: 999px;
-      font-weight: 800;
-      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
-      cursor: pointer;
-    }
-
-    .btn:hover,
-    .btn:focus-visible {
-      transform: translateY(-3px) scale(1.02);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #f5d5aa, var(--accent), #b57a41);
-      color: var(--accent-dark);
-      box-shadow: 0 18px 36px rgba(207, 155, 91, 0.3);
-    }
-
-    .btn-primary:hover,
-    .btn-primary:focus-visible {
-      box-shadow: 0 24px 42px rgba(207, 155, 91, 0.36);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff9f0;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(8px);
-    }
-
-    .btn-secondary:hover,
-    .btn-secondary:focus-visible {
-      background: rgba(255, 255, 255, 0.18);
-      box-shadow: 0 18px 34px rgba(9, 7, 5, 0.18);
-    }
-
-    .btn-whatsapp {
-      background: linear-gradient(135deg, #49e181, var(--green), var(--green-deep));
-      color: #07220f;
-      box-shadow: 0 18px 36px rgba(37, 211, 102, 0.26);
-    }
-
-    .hero-proof {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-      color: rgba(255, 245, 236, 0.84);
-    }
-
-    .hero-proof strong {
-      display: block;
-      color: #fff9f0;
-      font-size: 1.2rem;
-    }
-
-    .hero-proof span {
-      font-size: 0.92rem;
-      color: rgba(255, 245, 236, 0.72);
-    }
-
-    .hero-trust {
-      align-self: end;
-      padding: 1.5rem;
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08));
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 22px 40px rgba(10, 7, 5, 0.18);
-      transition-delay: 0.18s;
-    }
-
-    .hero-trust h3 {
-      color: #fff6ee;
-      font-size: 1.95rem;
-      margin-bottom: 0.9rem;
-    }
-
-    .hero-trust p {
-      color: rgba(255, 245, 236, 0.76);
-      font-size: 0.98rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .trust-list {
-      display: grid;
-      gap: 0.9rem;
-    }
-
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      color: #fff8f1;
-      padding: 0.8rem 0.85rem;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .trust-item svg {
-      width: 20px;
-      height: 20px;
-      flex: none;
-      fill: #f2c792;
-    }
-
-    .story-wrap {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(260px, 390px);
-      gap: 1.5rem;
-      align-items: stretch;
-    }
-
-    .story-card,
-    .story-panel,
-    .value-card,
-    .testimonial,
-    .contact-card,
-    .contact-visual,
-    .service-card {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 241, 232, 0.88));
-      box-shadow: var(--shadow-md);
-    }
-
-    .story-card {
-      padding: 2.4rem;
-    }
-
-    .story-card p + p {
-      margin-top: 1rem;
-    }
-    .story-panel {
-      padding: 2rem;
-      background:
-        linear-gradient(180deg, rgba(36, 26, 18, 0.92), rgba(69, 50, 37, 0.88)),
-        url("https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
-      color: #fff7ef;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .story-panel p {
-      color: rgba(255, 244, 234, 0.74);
-    }
-
-    .story-metrics {
-      display: grid;
-      gap: 1rem;
-      margin-top: 1.6rem;
-    }
-
-    .story-metrics strong {
-      display: block;
-      font-size: 2rem;
-      line-height: 1;
-      color: #f4d0a2;
-    }
-
-    .services-grid,
-    .value-grid,
-    .testimonials-grid {
-      display: grid;
-      gap: 1.35rem;
-    }
-
-    .services-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .service-card {
-      padding: 1.6rem;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-    }
-
-    .service-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-lg);
-      border-color: rgba(207, 155, 91, 0.26);
-    }
-
-    .service-icon,
-    .value-icon {
-      width: 58px;
-      height: 58px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 1rem;
-      border-radius: 18px;
-      background: linear-gradient(145deg, #fff7ec, #f0d2a8, #c88c4d);
-      box-shadow: 0 14px 28px rgba(207, 155, 91, 0.2);
-    }
-
-    .service-icon svg,
-    .value-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: var(--accent-dark);
-    }
-
-    .value-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .value-card {
-      padding: 1.65rem;
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-
-    .value-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-auto-flow: dense;
-      gap: 1.15rem;
-    }
-
-    .portfolio-item {
-      position: relative;
-      overflow: hidden;
-      min-height: 320px;
-      border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: var(--shadow-md);
-      isolation: isolate;
-    }
-
-    .portfolio-item img {
-      height: 100%;
-      transition: transform 0.7s ease;
-    }
-
-    .portfolio-item::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(17, 12, 8, 0.08) 10%, rgba(17, 12, 8, 0.72) 100%);
-      z-index: 1;
-      transition: background var(--transition);
-    }
-
-    .portfolio-item:hover img {
-      transform: scale(1.08);
-    }
-
-    .portfolio-item:hover::before {
-      background: linear-gradient(180deg, rgba(17, 12, 8, 0.18) 8%, rgba(17, 12, 8, 0.84) 100%);
-    }
-
-    .portfolio-overlay {
-      position: absolute;
-      inset: auto 1.2rem 1.2rem 1.2rem;
-      z-index: 2;
-      display: grid;
-      gap: 0.45rem;
-      color: #fff9f0;
-      transition: transform var(--transition), opacity var(--transition);
-    }
-
-    .portfolio-item:hover .portfolio-overlay {
-      transform: translateY(-6px);
-    }
-
-    .portfolio-tag {
-      width: fit-content;
-      padding: 0.42rem 0.8rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(6px);
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .portfolio-overlay h3 {
-      font-size: 2rem;
-      margin: 0;
-    }
-
-    .portfolio-overlay p {
-      color: rgba(255, 245, 236, 0.78);
-      font-size: 0.95rem;
-    }
-
-    .portfolio-item:nth-child(1) {
-      grid-column: span 5;
-      grid-row: span 2;
-    }
-
-    .portfolio-item:nth-child(2) {
-      grid-column: span 3;
-    }
-
-    .portfolio-item:nth-child(3) {
-      grid-column: span 4;
-      grid-row: span 2;
-    }
-
-    .portfolio-item:nth-child(4) {
-      grid-column: span 4;
-    }
-
-    .portfolio-item:nth-child(5) {
-      grid-column: span 4;
-      grid-row: span 2;
-    }
-
-    .portfolio-item:nth-child(6) {
-      grid-column: span 4;
-    }
-
-    .testimonials-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .testimonial {
-      position: relative;
-      padding: 2rem 1.8rem 1.8rem;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-    }
-
-    .testimonial::before {
-      content: '"';
-      position: absolute;
-      top: 0.5rem;
-      left: 1.1rem;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 6rem;
-      line-height: 1;
-      color: rgba(207, 155, 91, 0.2);
-    }
-
-    .testimonial:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-lg);
-      border-color: rgba(207, 155, 91, 0.24);
-    }
-
-    .stars {
-      color: #bf8646;
-      letter-spacing: 0.18em;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .testimonial p {
-      position: relative;
-      z-index: 1;
-      font-size: 1.06rem;
-    }
-
-    .testimonial strong {
-      display: block;
-      margin-top: 1.25rem;
-      color: var(--accent-dark);
-      font-size: 1rem;
-    }
-
-    .testimonial span {
-      display: block;
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-top: 0.2rem;
-    }
-
-    .cta-band {
-      padding: 3rem;
-      border-radius: var(--radius-xl);
-      background:
-        radial-gradient(circle at top right, rgba(207, 155, 91, 0.2), transparent 28%),
-        linear-gradient(135deg, #fff8ef 0%, #f7eadd 44%, #f2e2cf 100%);
-      border: 1px solid rgba(207, 155, 91, 0.18);
-      box-shadow: var(--shadow-lg);
-      text-align: center;
-    }
-
-    .cta-band p {
-      max-width: 620px;
-      margin: 0.85rem auto 1.8rem;
-    }
-
-    .contact-wrap {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
-      gap: 1.4rem;
-      align-items: stretch;
-    }
-
-    .contact-card {
-      padding: 2.4rem;
-    }
-
-    .contact-card p {
-      max-width: 54ch;
-      margin-top: 1rem;
-      margin-bottom: 1.8rem;
-    }
-
-    .contact-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.8rem;
-    }
-
-    .contact-points {
-      display: grid;
-      gap: 0.85rem;
-    }
-
-    .contact-point {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .contact-point svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--accent-deep);
-      flex: none;
-    }
-
-    .contact-visual {
-      overflow: hidden;
-      position: relative;
-      min-height: 100%;
-    }
-
-    .contact-visual img {
-      height: 100%;
-      min-height: 460px;
-      transition: transform 0.8s ease;
-    }
-
-    .contact-visual:hover img {
-      transform: scale(1.05);
-    }
-
-    .contact-visual::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 34%, rgba(17, 12, 8, 0.58) 100%);
-    }
-
-    .visual-caption {
-      position: absolute;
-      left: 1.4rem;
-      right: 1.4rem;
-      bottom: 1.4rem;
-      z-index: 1;
-      padding: 1rem 1.1rem;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      backdrop-filter: blur(10px);
-      color: #fff8f1;
-    }
-
-    .visual-caption strong {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-size: 1rem;
-    }
-
-    .visual-caption span {
-      color: rgba(255, 245, 236, 0.78);
-      font-size: 0.92rem;
-    }
-
-    .floating-whatsapp {
-      position: fixed;
-      right: 1.2rem;
-      bottom: 1.2rem;
-      z-index: 60;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.9rem 1.05rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #49e181, var(--green), var(--green-deep));
-      color: #071d0d;
-      font-weight: 800;
-      box-shadow: 0 18px 36px rgba(37, 211, 102, 0.28);
-      animation: pulse 2.4s infinite;
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-
-    .floating-whatsapp:hover,
-    .floating-whatsapp:focus-visible {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 24px 42px rgba(37, 211, 102, 0.34);
-    }
-
-    .floating-whatsapp svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
-
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    footer {
-      padding: 2.5rem 0 5rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 18px 36px rgba(37, 211, 102, 0.28), 0 0 0 0 rgba(37, 211, 102, 0.28);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chroma Studio | Photography & Makeup</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+      :root {
+        --bg: #fffdfd;
+        --bg-soft: #fff8fa;
+        --bg-card: rgba(255, 255, 255, 0.92);
+        --surface: #ffffff;
+        --surface-strong: #f8ebe7;
+        --text: #2b1f20;
+        --muted: #746468;
+        --line: rgba(168, 133, 138, 0.14);
+        --accent: #f7cfd8;
+        --accent-deep: #c98f9f;
+        --accent-dark: #4f3138;
+        --green: #25d366;
+        --green-deep: #1cad52;
+        --shadow-lg: 0 30px 70px rgba(91, 63, 70, 0.12);
+        --shadow-md: 0 18px 40px rgba(91, 63, 70, 0.1);
+        --shadow-sm: 0 10px 24px rgba(91, 63, 70, 0.07);
+        --radius-xl: 36px;
+        --radius-lg: 26px;
+        --radius-md: 20px;
+        --radius-sm: 16px;
+        --container: min(1200px, calc(100% - 2rem));
+        --transition: 0.35s ease;
       }
 
-      70% {
-        box-shadow: 0 18px 36px rgba(37, 211, 102, 0.28), 0 0 0 16px rgba(37, 211, 102, 0);
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      100% {
-        box-shadow: 0 18px 36px rgba(37, 211, 102, 0.28), 0 0 0 0 rgba(37, 211, 102, 0);
-      }
-    }
-
-    @media (max-width: 1080px) {
-      .hero-grid,
-      .story-wrap,
-      .contact-wrap {
-        grid-template-columns: 1fr;
+      html {
+        scroll-behavior: smooth;
       }
 
-      .services-grid,
-      .value-grid,
-      .testimonials-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      body {
+        font-family: "Manrope", sans-serif;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(247, 207, 216, 0.28),
+            transparent 22%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(237, 219, 209, 0.4),
+            transparent 26%
+          ),
+          linear-gradient(180deg, #ffffff 0%, #fffafb 52%, #fdf6f4 100%);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
       }
 
-      .hero-trust {
-        max-width: 520px;
+      body.loaded .hero-copy,
+      body.loaded .hero-trust,
+      body.loaded .hero-badge {
+        opacity: 1;
+        transform: translateY(0);
       }
 
-      .portfolio-item:nth-child(n) {
-        grid-column: span 6;
+      a {
+        color: inherit;
+        text-decoration: none;
       }
-    }
 
-    @media (max-width: 760px) {
+      img {
+        width: 100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      .container {
+        width: var(--container);
+        margin: 0 auto;
+      }
+
       .section {
-        padding: 4.7rem 0;
+        padding: 6.5rem 0;
+        position: relative;
       }
 
-      .topbar {
-        position: static;
-        padding-top: 0.8rem;
+      .section.alt {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.82),
+          rgba(247, 233, 236, 0.7)
+        );
       }
 
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
-        border-radius: 28px;
-      }
-
-      .nav-links {
-        width: 100%;
-        justify-content: space-between;
-        gap: 0.8rem;
-      }
-
-      .nav-cta {
-        width: 100%;
+      .section-head {
+        max-width: 760px;
+        margin: 0 auto 3.2rem;
         text-align: center;
       }
 
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.52rem 0.95rem;
+        margin-bottom: 1.2rem;
+        border-radius: 999px;
+        border: 1px solid rgba(201, 143, 159, 0.24);
+        background: rgba(255, 247, 249, 0.92);
+        color: var(--accent-deep);
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #efd5c8);
+        box-shadow: 0 0 0 6px rgba(247, 207, 216, 0.18);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Cormorant Garamond", serif;
+        line-height: 0.94;
+        letter-spacing: -0.03em;
+      }
+
+      h1 {
+        font-size: clamp(4rem, 8vw, 7rem);
+        color: #fff8f1;
+        text-wrap: balance;
+      }
+
+      h2 {
+        font-size: clamp(2.9rem, 5vw, 4.7rem);
+        margin-bottom: 1rem;
+        text-wrap: balance;
+      }
+
+      h3 {
+        font-size: 2rem;
+        margin-bottom: 0.55rem;
+      }
+
+      p {
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        padding: 1rem 0 0;
+        transition: padding var(--transition);
+      }
+
+      .topbar.scrolled {
+        padding-top: 0.45rem;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(56, 39, 44, 0.58);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 18px 36px rgba(17, 12, 8, 0.18);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 50px;
+        height: 50px;
+        display: grid;
+        place-items: center;
+        border-radius: 18px;
+        background: linear-gradient(145deg, #fdecef, #f7cfd8, #d6a89d);
+        color: #fff9f0;
+        font-size: 1.05rem;
+        font-weight: 800;
+        box-shadow: 0 14px 30px rgba(201, 143, 159, 0.24);
+      }
+
+      .brand-text strong {
+        display: block;
+        color: #fff8f1;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-text span {
+        color: rgba(255, 244, 234, 0.72);
+        font-size: 0.84rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        color: rgba(255, 244, 234, 0.88);
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        transition:
+          color var(--transition),
+          transform var(--transition);
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible {
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      .nav-cta {
+        padding: 0.82rem 1.2rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #f2c792, var(--accent), #b57a41);
+        color: var(--accent-dark);
+        font-weight: 800;
+        box-shadow: 0 12px 28px rgba(201, 143, 159, 0.24);
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition);
+      }
+
+      .nav-cta:hover,
+      .nav-cta:focus-visible {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 18px 34px rgba(201, 143, 159, 0.3);
+      }
+
+      .hero {
+        padding: 1rem 0 2rem;
+      }
+
       .hero-shell {
-        min-height: auto;
+        min-height: calc(100vh - 2rem);
+        display: grid;
+        align-items: end;
+        padding: clamp(1.8rem, 4vw, 3rem);
+        border-radius: var(--radius-xl);
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        isolation: isolate;
+        background:
+          linear-gradient(
+            115deg,
+            rgba(34, 22, 24, 0.78) 10%,
+            rgba(51, 33, 38, 0.5) 46%,
+            rgba(31, 20, 22, 0.74) 100%
+          ),
+          url("https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1800&q=80")
+            center/cover no-repeat;
       }
 
-      .hero-actions,
-      .contact-actions {
-        flex-direction: column;
-        align-items: stretch;
+      .hero-shell::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            circle at 78% 22%,
+            rgba(247, 207, 216, 0.22),
+            transparent 24%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(8, 6, 5, 0.12),
+            rgba(8, 6, 5, 0.24) 35%,
+            rgba(8, 6, 5, 0.72) 100%
+          );
+        z-index: -1;
       }
 
-      .btn,
-      .floating-whatsapp {
-        justify-content: center;
+      .hero-shell::after {
+        content: "";
+        position: absolute;
+        inset: auto 1.5rem 1.5rem auto;
+        width: min(32vw, 320px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(247, 207, 216, 0.16),
+          transparent 68%
+        );
+        filter: blur(8px);
+        pointer-events: none;
+      }
+
+      .hero-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.65fr);
+        align-items: end;
+        gap: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-copy,
+      .hero-trust,
+      .hero-badge {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.9s ease,
+          transform 0.9s ease;
+      }
+
+      .hero-copy {
+        max-width: 720px;
+        transition-delay: 0.08s;
+      }
+
+      .hero-copy p {
+        max-width: 42ch;
+        margin-top: 1.25rem;
+        color: rgba(255, 245, 236, 0.84);
+        font-size: 1.14rem;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin-bottom: 1.6rem;
+        padding: 0.7rem 1rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: #fff5f8;
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        backdrop-filter: blur(8px);
+      }
+
+      .hero-badge svg {
+        width: 16px;
+        height: 16px;
+        fill: #f7cfd8;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2.2rem;
       }
 
       .btn {
-        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        padding: 1.05rem 1.55rem;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 800;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition),
+          background var(--transition),
+          border-color var(--transition),
+          color var(--transition);
+        cursor: pointer;
+      }
+
+      .btn:hover,
+      .btn:focus-visible {
+        transform: translateY(-3px) scale(1.02);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #fff1f4, var(--accent), #e4b8ad);
+        color: var(--accent-dark);
+        box-shadow: 0 18px 36px rgba(201, 143, 159, 0.26);
+      }
+
+      .btn-primary:hover,
+      .btn-primary:focus-visible {
+        box-shadow: 0 24px 42px rgba(201, 143, 159, 0.3);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff9f0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+      }
+
+      .btn-secondary:hover,
+      .btn-secondary:focus-visible {
+        background: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 18px 34px rgba(9, 7, 5, 0.18);
+      }
+
+      .btn-whatsapp {
+        background: linear-gradient(
+          135deg,
+          #49e181,
+          var(--green),
+          var(--green-deep)
+        );
+        color: #07220f;
+        box-shadow: 0 18px 36px rgba(37, 211, 102, 0.26);
+      }
+
+      .hero-proof {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+        color: rgba(255, 245, 236, 0.84);
+      }
+
+      .hero-proof strong {
+        display: block;
+        color: #fff9f0;
+        font-size: 1.2rem;
+      }
+
+      .hero-proof span {
+        font-size: 0.92rem;
+        color: rgba(255, 245, 236, 0.72);
+      }
+
+      .hero-trust {
+        align-self: end;
+        padding: 1.5rem;
+        border-radius: 28px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.14),
+          rgba(255, 255, 255, 0.08)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 22px 40px rgba(10, 7, 5, 0.18);
+        transition-delay: 0.18s;
+      }
+
+      .hero-trust h3 {
+        color: #fff6ee;
+        font-size: 1.95rem;
+        margin-bottom: 0.9rem;
+      }
+
+      .hero-trust p {
+        color: rgba(255, 245, 236, 0.76);
+        font-size: 0.98rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .trust-list {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        color: #fff8f1;
+        padding: 0.8rem 0.85rem;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .trust-item svg {
+        width: 20px;
+        height: 20px;
+        flex: none;
+        fill: #f2c792;
+      }
+
+      .story-wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 390px);
+        gap: 1.5rem;
+        align-items: stretch;
+      }
+
+      .story-card,
+      .story-panel,
+      .value-card,
+      .testimonial,
+      .contact-card,
+      .contact-visual,
+      .service-card {
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.98),
+          rgba(252, 241, 244, 0.88)
+        );
+        box-shadow: var(--shadow-md);
+      }
+
+      .story-card {
+        padding: 2.4rem;
+      }
+
+      .story-card p + p {
+        margin-top: 1rem;
+      }
+      .story-panel {
+        padding: 2rem;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(74, 46, 54, 0.92),
+            rgba(120, 84, 91, 0.88)
+          ),
+          url("https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1200&q=80")
+            center/cover no-repeat;
+        color: #fff7ef;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .story-panel p {
+        color: rgba(255, 244, 234, 0.74);
+      }
+
+      .story-metrics {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1.6rem;
+      }
+
+      .story-metrics strong {
+        display: block;
+        font-size: 2rem;
+        line-height: 1;
+        color: #f1bcc8;
       }
 
       .services-grid,
+      .makeup-grid,
       .value-grid,
-      .testimonials-grid,
+      .testimonials-grid {
+        display: grid;
+        gap: 1.35rem;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .service-card {
+        padding: 1.6rem;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition),
+          border-color var(--transition);
+      }
+
+      .makeup-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .makeup-card {
+        overflow: hidden;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition),
+          border-color var(--transition);
+      }
+
+      .makeup-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(201, 143, 159, 0.28);
+      }
+
+      .makeup-image {
+        overflow: hidden;
+      }
+
+      .makeup-image img {
+        height: 280px;
+        transition: transform 0.7s ease;
+      }
+
+      .makeup-card:hover .makeup-image img {
+        transform: scale(1.06);
+      }
+
+      .makeup-copy {
+        padding: 1.55rem;
+      }
+
+      .service-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(201, 143, 159, 0.24);
+      }
+
+      .service-icon,
+      .value-icon {
+        width: 58px;
+        height: 58px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 1rem;
+        border-radius: 18px;
+        background: linear-gradient(145deg, #fff7f8, #f7cfd8, #e8c4b7);
+        box-shadow: 0 14px 28px rgba(201, 143, 159, 0.16);
+      }
+
+      .service-icon svg,
+      .value-icon svg {
+        width: 24px;
+        height: 24px;
+        fill: var(--accent-dark);
+      }
+
+      .value-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .value-card {
+        padding: 1.65rem;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition);
+      }
+
+      .value-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+      }
+
       .portfolio-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-auto-flow: dense;
+        gap: 1.15rem;
       }
 
-      .portfolio-item:nth-child(n) {
-        grid-column: auto;
-        min-height: 300px;
+      .portfolio-item {
+        position: relative;
+        overflow: hidden;
+        min-height: 320px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: var(--shadow-md);
+        isolation: isolate;
       }
 
-      .cta-band,
-      .contact-card,
-      .story-card,
-      .story-panel {
-        padding: 2rem 1.4rem;
+      .portfolio-item img {
+        height: 100%;
+        transition: transform 0.7s ease;
+      }
+
+      .portfolio-item::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 12, 8, 0.08) 10%,
+          rgba(17, 12, 8, 0.72) 100%
+        );
+        z-index: 1;
+        transition: background var(--transition);
+      }
+
+      .portfolio-item:hover img {
+        transform: scale(1.08);
+      }
+
+      .portfolio-item:hover::before {
+        background: linear-gradient(
+          180deg,
+          rgba(17, 12, 8, 0.18) 8%,
+          rgba(17, 12, 8, 0.84) 100%
+        );
+      }
+
+      .portfolio-overlay {
+        position: absolute;
+        inset: auto 1.2rem 1.2rem 1.2rem;
+        z-index: 2;
+        display: grid;
+        gap: 0.45rem;
+        color: #fff9f0;
+        transition:
+          transform var(--transition),
+          opacity var(--transition);
+      }
+
+      .portfolio-item:hover .portfolio-overlay {
+        transform: translateY(-6px);
+      }
+
+      .portfolio-tag {
+        width: fit-content;
+        padding: 0.42rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(6px);
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .portfolio-overlay h3 {
+        font-size: 2rem;
+        margin: 0;
+      }
+
+      .portfolio-overlay p {
+        color: rgba(255, 245, 236, 0.78);
+        font-size: 0.95rem;
+      }
+
+      .portfolio-item:nth-child(1) {
+        grid-column: span 5;
+        grid-row: span 2;
+      }
+
+      .portfolio-item:nth-child(2) {
+        grid-column: span 3;
+      }
+
+      .portfolio-item:nth-child(3) {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+
+      .portfolio-item:nth-child(4) {
+        grid-column: span 4;
+      }
+
+      .portfolio-item:nth-child(5) {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+
+      .portfolio-item:nth-child(6) {
+        grid-column: span 4;
+      }
+
+      .testimonials-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .testimonial {
+        position: relative;
+        padding: 2rem 1.8rem 1.8rem;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition),
+          border-color var(--transition);
+      }
+
+      .testimonial::before {
+        content: '"';
+        position: absolute;
+        top: 0.5rem;
+        left: 1.1rem;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 6rem;
+        line-height: 1;
+        color: rgba(201, 143, 159, 0.22);
+      }
+
+      .testimonial:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(201, 143, 159, 0.24);
+      }
+
+      .stars {
+        color: #bf8646;
+        letter-spacing: 0.18em;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .testimonial p {
+        position: relative;
+        z-index: 1;
+        font-size: 1.06rem;
+      }
+
+      .testimonial strong {
+        display: block;
+        margin-top: 1.25rem;
+        color: var(--accent-dark);
+        font-size: 1rem;
+      }
+
+      .testimonial span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.92rem;
+        margin-top: 0.2rem;
+      }
+
+      .cta-band {
+        padding: 3rem;
+        border-radius: var(--radius-xl);
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(247, 207, 216, 0.28),
+            transparent 28%
+          ),
+          linear-gradient(135deg, #fffefe 0%, #fff3f6 44%, #f6e8e3 100%);
+        border: 1px solid rgba(201, 143, 159, 0.18);
+        box-shadow: var(--shadow-lg);
+        text-align: center;
+      }
+
+      .cta-band p {
+        max-width: 620px;
+        margin: 0.85rem auto 1.8rem;
+      }
+
+      .contact-wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+        gap: 1.4rem;
+        align-items: stretch;
+      }
+
+      .contact-card {
+        padding: 2.4rem;
+      }
+
+      .contact-card p {
+        max-width: 54ch;
+        margin-top: 1rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .contact-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.8rem;
+      }
+
+      .contact-points {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .contact-point {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .contact-point svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--accent-deep);
+        flex: none;
+      }
+
+      .contact-visual {
+        overflow: hidden;
+        position: relative;
+        min-height: 100%;
+      }
+
+      .contact-visual img {
+        height: 100%;
+        min-height: 460px;
+        transition: transform 0.8s ease;
+      }
+
+      .contact-visual:hover img {
+        transform: scale(1.05);
+      }
+
+      .contact-visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 34%,
+          rgba(17, 12, 8, 0.58) 100%
+        );
+      }
+
+      .visual-caption {
+        position: absolute;
+        left: 1.4rem;
+        right: 1.4rem;
+        bottom: 1.4rem;
+        z-index: 1;
+        padding: 1rem 1.1rem;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(10px);
+        color: #fff8f1;
+      }
+
+      .visual-caption strong {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+      }
+
+      .visual-caption span {
+        color: rgba(255, 245, 236, 0.78);
+        font-size: 0.92rem;
       }
 
       .floating-whatsapp {
-        right: 0.9rem;
-        bottom: 0.9rem;
-        padding: 0.9rem;
+        position: fixed;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        z-index: 60;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.9rem 1.05rem;
+        border-radius: 999px;
+        background: linear-gradient(
+          135deg,
+          #49e181,
+          var(--green),
+          var(--green-deep)
+        );
+        color: #071d0d;
+        font-weight: 800;
+        box-shadow: 0 18px 36px rgba(37, 211, 102, 0.28);
+        animation: pulse 2.4s infinite;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition);
       }
 
-      .floating-whatsapp span {
-        display: none;
+      .floating-whatsapp:hover,
+      .floating-whatsapp:focus-visible {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 24px 42px rgba(37, 211, 102, 0.34);
       }
 
+      .floating-whatsapp svg {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.75s ease,
+          transform 0.75s ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
       footer {
-        padding-bottom: 6rem;
+        padding: 2.5rem 0 5rem;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.95rem;
       }
-    }
-  </style>
-</head>
-<body>
-  <header class="topbar">
-    <div class="container">
-      <nav class="nav">
-        <a href="#top" class="brand">
-          <span class="brand-mark">CS</span>
-          <span class="brand-text">
-            <strong>Chroma Studio</strong>
-            <span>Premium wedding, portrait, and event photography</span>
-          </span>
-        </a>
-        <div class="nav-links">
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#testimonials">Reviews</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <a class="nav-cta" href="https://wa.me/2348012345678?text=Hello%2C%20I%27d%20love%20to%20book%20a%20photography%20session." target="_blank" rel="noopener noreferrer">Book Now</a>
-      </nav>
-    </div>
-  </header>
 
-  <main id="top">
-    <section class="hero">
+      @keyframes pulse {
+        0% {
+          box-shadow:
+            0 18px 36px rgba(37, 211, 102, 0.28),
+            0 0 0 0 rgba(37, 211, 102, 0.28);
+        }
+
+        70% {
+          box-shadow:
+            0 18px 36px rgba(37, 211, 102, 0.28),
+            0 0 0 16px rgba(37, 211, 102, 0);
+        }
+
+        100% {
+          box-shadow:
+            0 18px 36px rgba(37, 211, 102, 0.28),
+            0 0 0 0 rgba(37, 211, 102, 0);
+        }
+      }
+
+      @media (max-width: 1080px) {
+        .hero-grid,
+        .story-wrap,
+        .contact-wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .services-grid,
+        .makeup-grid,
+        .value-grid,
+        .testimonials-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .hero-trust {
+          max-width: 520px;
+        }
+
+        .portfolio-item:nth-child(n) {
+          grid-column: span 6;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .section {
+          padding: 3.8rem 0;
+        }
+
+        .topbar {
+          position: static;
+          padding-top: 0.6rem;
+        }
+
+        .nav {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.85rem;
+          padding: 0.9rem 0.95rem;
+          border-radius: 24px;
+        }
+
+        .nav-links {
+          width: 100%;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 0.55rem;
+          font-size: 0.88rem;
+        }
+
+        .nav-links a {
+          text-align: center;
+          padding: 0.6rem 0.45rem;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-cta {
+          width: 100%;
+          text-align: center;
+          padding: 0.9rem 1rem;
+        }
+
+        .brand {
+          width: 100%;
+        }
+
+        .brand-mark {
+          width: 44px;
+          height: 44px;
+          border-radius: 14px;
+          font-size: 0.95rem;
+        }
+
+        .brand-text span {
+          font-size: 0.76rem;
+        }
+
+        .hero-shell {
+          min-height: auto;
+          padding: 1.15rem;
+          border-radius: 26px;
+        }
+
+        .hero-grid {
+          gap: 1rem;
+        }
+
+        .hero-copy p {
+          font-size: 0.98rem;
+          margin-top: 0.9rem;
+        }
+
+        .hero-badge {
+          margin-bottom: 1rem;
+          padding: 0.58rem 0.82rem;
+          font-size: 0.72rem;
+        }
+
+        .hero-proof {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 0.6rem;
+          margin-top: 1.35rem;
+        }
+
+        .hero-proof div,
+        .trust-item {
+          padding: 0.75rem;
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-proof strong {
+          font-size: 1rem;
+        }
+
+        .hero-proof span,
+        .trust-item {
+          font-size: 0.82rem;
+          line-height: 1.45;
+        }
+
+        .hero-trust {
+          padding: 1rem;
+          border-radius: 22px;
+        }
+
+        .hero-trust h3 {
+          font-size: 1.55rem;
+          margin-bottom: 0.55rem;
+        }
+
+        .hero-trust p {
+          font-size: 0.92rem;
+          margin-bottom: 0.9rem;
+        }
+
+        .hero-actions,
+        .contact-actions {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.75rem;
+        }
+
+        .btn,
+        .floating-whatsapp {
+          justify-content: center;
+        }
+
+        .btn {
+          width: 100%;
+          padding: 0.92rem 1rem;
+          font-size: 0.95rem;
+        }
+
+        .section-head {
+          margin-bottom: 2rem;
+        }
+
+        .section-head p {
+          font-size: 0.97rem;
+        }
+
+        h1 {
+          font-size: clamp(2.8rem, 13vw, 4rem);
+        }
+
+        h2 {
+          font-size: clamp(2.15rem, 11vw, 3rem);
+        }
+
+        h3 {
+          font-size: 1.55rem;
+        }
+
+        .services-grid,
+        .makeup-grid,
+        .value-grid,
+        .testimonials-grid,
+        .portfolio-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .portfolio-item:nth-child(n) {
+          grid-column: auto;
+          min-height: 240px;
+        }
+
+        .portfolio-overlay {
+          inset: auto 0.9rem 0.9rem 0.9rem;
+          gap: 0.3rem;
+        }
+
+        .portfolio-overlay h3 {
+          font-size: 1.45rem;
+        }
+
+        .portfolio-overlay p {
+          font-size: 0.86rem;
+        }
+
+        .portfolio-tag {
+          font-size: 0.68rem;
+          padding: 0.34rem 0.62rem;
+        }
+
+        .cta-band,
+        .contact-card,
+        .story-card,
+        .story-panel {
+          padding: 1.4rem 1rem;
+          border-radius: 22px;
+        }
+
+        .service-card,
+        .value-card,
+        .testimonial {
+          padding: 1.15rem;
+          border-radius: 20px;
+        }
+
+        .makeup-copy {
+          padding: 1rem;
+        }
+
+        .makeup-image img,
+        .contact-visual img {
+          min-height: 220px;
+          height: 220px;
+        }
+
+        .contact-wrap,
+        .story-wrap {
+          gap: 1rem;
+        }
+
+        .contact-card p,
+        .testimonial p {
+          font-size: 0.95rem;
+        }
+
+        .contact-points {
+          gap: 0.7rem;
+        }
+
+        .contact-point {
+          align-items: flex-start;
+          font-size: 0.92rem;
+        }
+
+        .visual-caption {
+          left: 0.8rem;
+          right: 0.8rem;
+          bottom: 0.8rem;
+          padding: 0.8rem 0.85rem;
+        }
+
+        .visual-caption span {
+          font-size: 0.82rem;
+        }
+
+        .floating-whatsapp {
+          right: 0.9rem;
+          bottom: 0.9rem;
+          padding: 0.82rem;
+        }
+
+        .floating-whatsapp span {
+          display: none;
+        }
+
+        footer {
+          padding-bottom: 6rem;
+        }
+      }
+
+      @media (max-width: 540px) {
+        .container {
+          width: min(100% - 1rem, 100%);
+        }
+
+        .nav-links {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .hero-proof {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-proof div {
+          text-align: left;
+        }
+
+        .section-head {
+          margin-bottom: 1.6rem;
+        }
+
+        .portfolio-item:nth-child(n) {
+          min-height: 220px;
+        }
+
+        .portfolio-overlay h3 {
+          font-size: 1.3rem;
+        }
+
+        .makeup-image img,
+        .contact-visual img {
+          min-height: 200px;
+          height: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
       <div class="container">
-        <div class="hero-shell">
-          <div class="hero-grid">
-            <div class="hero-copy">
-              <div class="hero-badge">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2l2.7 5.47 6.03.88-4.36 4.24 1.03 5.98L12 15.97l-5.4 2.6 1.03-5.98L3.27 8.35l6.03-.88L12 2z"></path>
-                </svg>
-                Premium storytelling through timeless imagery
-              </div>
-              <h1>We Capture Moments You&apos;ll Never Forget</h1>
-              <p>Professional photography for weddings, portraits, and special events with polished direction, emotional storytelling, and a luxury client experience from first chat to final gallery.</p>
-              <div class="hero-actions">
-                <a class="btn btn-primary" href="#portfolio">View Portfolio</a>
-                <a class="btn btn-whatsapp" href="https://wa.me/2348012345678?text=Hello%2C%20I%27d%20like%20to%20book%20a%20shoot." target="_blank" rel="noopener noreferrer">Book on WhatsApp</a>
-              </div>
-              <div class="hero-proof">
-                <div>
-                  <strong>250+</strong>
-                  <span>Sessions captured beautifully</span>
-                </div>
-                <div>
-                  <strong>48hr</strong>
-                  <span>Fast response on new bookings</span>
-                </div>
-                <div>
-                  <strong>5-Star</strong>
-                  <span>Client experience and delivery</span>
-                </div>
-              </div>
-            </div>
+        <nav class="nav">
+          <a href="#top" class="brand">
+            <span class="brand-mark">CS</span>
+            <span class="brand-text">
+              <strong>Chroma Studio</strong>
+              <span
+                >Premium photography and makeup for weddings and events</span
+              >
+            </span>
+          </a>
+          <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#makeup">Makeup</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#testimonials">Reviews</a>
+            <a href="#contact">Contact</a>
+          </div>
+          <a
+            class="nav-cta"
+            href="https://wa.me/2348012345678?text=Hello%2C%20I%27d%20love%20to%20book%20photography%20and%20makeup%20services."
+            target="_blank"
+            rel="noopener noreferrer"
+            >Book Now</a
+          >
+        </nav>
+      </div>
+    </header>
 
-            <aside class="hero-trust">
-              <h3>Luxury visuals. Stress-free booking.</h3>
-              <p>Your most important moments deserve more than photos. They deserve atmosphere, emotion, and elegant delivery that feels instantly worth sharing.</p>
-              <div class="trust-list">
-                <div class="trust-item">
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <div class="hero-shell">
+            <div class="hero-grid">
+              <div class="hero-copy">
+                <div class="hero-badge">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4C8.24 4 9.91 4.81 11 6.09 12.09 4.81 13.76 4 15.5 4A4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                    <path
+                      d="M12 2l2.7 5.47 6.03.88-4.36 4.24 1.03 5.98L12 15.97l-5.4 2.6 1.03-5.98L3.27 8.35l6.03-.88L12 2z"
+                    ></path>
                   </svg>
-                  Wedding, portrait, studio, and event sessions
+                  Elegant beauty and imagery for your most important day
                 </div>
-                <div class="trust-item">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 1a9 9 0 0 0-9 9c0 7 9 13 9 13s9-6 9-13a9 9 0 0 0-9-9zm0 12.3A3.3 3.3 0 1 1 12 6.7a3.3 3.3 0 0 1 0 6.6z"></path>
-                  </svg>
-                  Clean direction with a refined editorial feel
+                <h1>Photography &amp; Makeup for Every Beautiful Moment</h1>
+                <p>
+                  Professional photography and flawless makeup for weddings,
+                  portraits, and special occasions with one refined team
+                  handling the full experience beautifully.
+                </p>
+                <div class="hero-actions">
+                  <a class="btn btn-primary" href="#portfolio"
+                    >View Portfolio</a
+                  >
+                  <a
+                    class="btn btn-whatsapp"
+                    href="https://wa.me/2348012345678?text=Hello%2C%20I%27d%20like%20to%20book%20photography%20and%20makeup%20services."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Book on WhatsApp</a
+                  >
                 </div>
-                <div class="trust-item">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 17H5V9h14zm-7-9a4 4 0 1 0 4 4 4 4 0 0 0-4-4z"></path>
-                  </svg>
-                  Fast WhatsApp replies and easy date confirmation
+                <div class="hero-proof">
+                  <div>
+                    <strong>250+</strong>
+                    <span>beauty and photo sessions delivered elegantly</span>
+                  </div>
+                  <div>
+                    <strong>2-in-1</strong>
+                    <span>photography and makeup from one trusted brand</span>
+                  </div>
+                  <div>
+                    <strong>5-Star</strong>
+                    <span>client experience from glam to gallery</span>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="hero-trust">
+                <h3>Flawless glam. Timeless photographs.</h3>
+                <p>
+                  Your biggest moments deserve a seamless beauty experience,
+                  polished portraits, and a calm process that feels premium from
+                  first message to final delivery.
+                </p>
+                <div class="trust-list">
+                  <div class="trust-item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4C8.24 4 9.91 4.81 11 6.09 12.09 4.81 13.76 4 15.5 4A4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                      ></path>
+                    </svg>
+                    Photography and makeup tailored for weddings and occasions
+                  </div>
+                  <div class="trust-item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M12 1a9 9 0 0 0-9 9c0 7 9 13 9 13s9-6 9-13a9 9 0 0 0-9-9zm0 12.3A3.3 3.3 0 1 1 12 6.7a3.3 3.3 0 0 1 0 6.6z"
+                      ></path>
+                    </svg>
+                    Soft glam artistry with a refined editorial finish
+                  </div>
+                  <div class="trust-item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 17H5V9h14zm-7-9a4 4 0 1 0 4 4 4 4 0 0 0-4-4z"
+                      ></path>
+                    </svg>
+                    Easy WhatsApp booking and coordinated session planning
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt reveal" id="about">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">About The Brand</span>
+            <h2>
+              A premium beauty brand where makeup and photography work together
+              beautifully.
+            </h2>
+            <p>
+              We blend polished imagery with soft, flawless glam so clients can
+              look radiant and leave with photographs that feel elevated,
+              feminine, and timeless.
+            </p>
+          </div>
+          <div class="story-wrap">
+            <article class="story-card">
+              <h3>Crafted for your most beautiful moments.</h3>
+              <p>
+                From bridal mornings to portrait sessions and milestone events,
+                we create a seamless experience where your makeup and images are
+                styled to complement each other perfectly.
+              </p>
+              <p>
+                Clients choose us for the balance of artistry and reliability:
+                one trusted team, calm communication, and polished results that
+                feel luxurious without the stress.
+              </p>
+            </article>
+            <aside class="story-panel">
+              <span class="eyebrow">Trusted Experience</span>
+              <div class="story-metrics">
+                <div>
+                  <strong>120+</strong>
+                  <p>
+                    happy clients who trusted us with both beauty and imagery
+                  </p>
+                </div>
+                <div>
+                  <strong>2 Signature Offers</strong>
+                  <p>
+                    photography and makeup designed to work beautifully together
+                  </p>
                 </div>
               </div>
             </aside>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section alt reveal" id="about">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">About The Brand</span>
-          <h2>Photography that feels cinematic, intimate, and beautifully unforgettable.</h2>
-          <p>We keep the existing calm elegance of your site, then elevate it with richer visuals, stronger hierarchy, and a smoother path to booking.</p>
-        </div>
-        <div class="story-wrap">
-          <article class="story-card">
-            <h3>Crafted for moments that matter.</h3>
-            <p>From joyful wedding mornings to polished portrait sessions, every frame is directed with care so your final gallery feels premium, emotional, and unmistakably professional.</p>
-            <p>Clients choose us for the balance of artistry and reliability: clear communication, fast turnaround, and a process that feels effortless from inquiry to delivery.</p>
-          </article>
-          <aside class="story-panel">
-            <span class="eyebrow">Trusted Experience</span>
-            <div class="story-metrics">
-              <div>
-                <strong>120+</strong>
-                <p>happy clients who came for photos and stayed for the experience</p>
+      <section class="section reveal" id="services">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Services</span>
+            <h2>
+              Photography services with polished direction and premium finish.
+            </h2>
+            <p>
+              Our photography still leads with elegant storytelling, now paired
+              with a beauty-first brand experience.
+            </p>
+          </div>
+          <div class="services-grid">
+            <article class="service-card">
+              <div class="service-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M9 3l-1.83 2H4a2 2 0 0 0-2 2v10a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4V7a2 2 0 0 0-2-2h-3.17L15 3zm3 15a5 5 0 1 1 5-5 5 5 0 0 1-5 5z"
+                  ></path>
+                </svg>
               </div>
-              <div>
-                <strong>4 Services</strong>
-                <p>weddings, portraits, events, and studio sessions tailored to your goals</p>
+              <h3>Portrait Photography</h3>
+              <p>
+                Confident, polished portraits for personal brands, families,
+                graduates, and beauty-focused sessions.
+              </p>
+            </article>
+            <article class="service-card">
+              <div class="service-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4C8.24 4 9.91 4.81 11 6.09 12.09 4.81 13.76 4 15.5 4A4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  ></path>
+                </svg>
               </div>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="services">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Services</span>
-          <h2>Premium coverage designed around your story.</h2>
-          <p>Each session is structured to create polished, high-impact images that feel natural and emotionally rich.</p>
-        </div>
-        <div class="services-grid">
-          <article class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M9 3l-1.83 2H4a2 2 0 0 0-2 2v10a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4V7a2 2 0 0 0-2-2h-3.17L15 3zm3 15a5 5 0 1 1 5-5 5 5 0 0 1-5 5z"></path>
-              </svg>
-            </div>
-            <h3>Portrait Photography</h3>
-            <p>Confident, polished portraits for personal brands, families, graduates, and creatives.</p>
-          </article>
-          <article class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4C8.24 4 9.91 4.81 11 6.09 12.09 4.81 13.76 4 15.5 4A4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-              </svg>
-            </div>
-            <h3>Wedding Photography</h3>
-            <p>Elegant storytelling that preserves emotion, detail, atmosphere, and genuine connection.</p>
-          </article>
-          <article class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 17H5V9h14zm-7-7a4 4 0 1 0 4 4 4 4 0 0 0-4-4z"></path>
-              </svg>
-            </div>
-            <h3>Event Coverage</h3>
-            <p>Professional event imagery that highlights the energy, crowd, and most meaningful moments.</p>
-          </article>
-          <article class="service-card">
-            <div class="service-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M21 5h-3.17L16 3H8L6.17 5H3a2 2 0 0 0-2 2v9a5 5 0 0 0 5 5h12a5 5 0 0 0 5-5V7a2 2 0 0 0-2-2zm-9 13a5 5 0 1 1 5-5 5 5 0 0 1-5 5z"></path>
-              </svg>
-            </div>
-            <h3>Studio Sessions</h3>
-            <p>Controlled lighting, refined posing, and clean editing for timeless studio portraits.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-    <section class="section alt reveal" id="portfolio">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Portfolio</span>
-          <h2>Images that make people stop, feel, and inquire.</h2>
-          <p>Your portfolio is the main selling point, so the gallery now feels bigger, richer, and more premium with hover overlays and a stronger masonry rhythm.</p>
-        </div>
-        <div class="portfolio-grid">
-          <figure class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1400&q=80" alt="Bride and groom sharing a joyful wedding moment">
-            <figcaption class="portfolio-overlay">
-              <span class="portfolio-tag">Wedding</span>
-              <h3>Wedding Stories</h3>
-              <p>Emotion-rich coverage for the moments you never want to lose.</p>
-            </figcaption>
-          </figure>
-          <figure class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80" alt="Portrait session in soft natural light">
-            <figcaption class="portfolio-overlay">
-              <span class="portfolio-tag">Portrait</span>
-              <h3>Portrait Sessions</h3>
-              <p>Confident, flattering frames with a clean editorial finish.</p>
-            </figcaption>
-          </figure>
-          <figure class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80" alt="Bride posing during a wedding portrait session">
-            <figcaption class="portfolio-overlay">
-              <span class="portfolio-tag">Wedding</span>
-              <h3>Elegant Details</h3>
-              <p>Luxury styling and timeless moments captured with precision.</p>
-            </figcaption>
-          </figure>
-          <figure class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80" alt="Crowd scene at a live event">
-            <figcaption class="portfolio-overlay">
-              <span class="portfolio-tag">Event</span>
+              <h3>Wedding Photography</h3>
+              <p>
+                Elegant storytelling that preserves emotion, detail, beauty,
+                atmosphere, and genuine connection.
+              </p>
+            </article>
+            <article class="service-card">
+              <div class="service-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 17H5V9h14zm-7-7a4 4 0 1 0 4 4 4 4 0 0 0-4-4z"
+                  ></path>
+                </svg>
+              </div>
               <h3>Event Coverage</h3>
-              <p>Professional visuals that keep your event looking memorable and polished.</p>
-            </figcaption>
-          </figure>
-          <figure class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80" alt="Studio portrait with dramatic lighting">
-            <figcaption class="portfolio-overlay">
-              <span class="portfolio-tag">Studio</span>
-              <h3>Studio Portraits</h3>
-              <p>Refined lighting and bold composition for premium final images.</p>
-            </figcaption>
-          </figure>
-          <figure class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80" alt="Lifestyle portrait outdoors">
-            <figcaption class="portfolio-overlay">
-              <span class="portfolio-tag">Portrait</span>
-              <h3>Lifestyle Frames</h3>
-              <p>Natural moments that still feel elevated, intentional, and brand-ready.</p>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Why Choose Us</span>
-          <h2>Built to turn interest into confident bookings.</h2>
-          <p>This section adds the value language clients need before they reach out, so the website does more of the selling for you.</p>
-        </div>
-        <div class="value-grid">
-          <article class="value-card">
-            <div class="value-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M21 5h-3.17L16 3H8L6.17 5H3a2 2 0 0 0-2 2v9a5 5 0 0 0 5 5h12a5 5 0 0 0 5-5V7a2 2 0 0 0-2-2zm-9 13a5 5 0 1 1 5-5 5 5 0 0 1-5 5z"></path>
-              </svg>
-            </div>
-            <h3>Showcase Your Best Moments Professionally</h3>
-            <p>Every frame is composed and edited to look polished, emotional, and proudly shareable.</p>
-          </article>
-          <article class="value-card">
-            <div class="value-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M3 13h8V3H3zm10 8h8v-8h-8zM3 21h8v-6H3zm10-10h8V3h-8z"></path>
-              </svg>
-            </div>
-            <h3>Attract More Clients Through Strong Visuals</h3>
-            <p>Premium imagery helps personal brands, couples, and businesses stand out instantly.</p>
-          </article>
-          <article class="value-card">
-            <div class="value-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 17H5V9h14z"></path>
-              </svg>
-            </div>
-            <h3>Easy Booking Without Stress</h3>
-            <p>From first message to confirmed session, the process stays simple, clear, and welcoming.</p>
-          </article>
-          <article class="value-card">
-            <div class="value-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-2 11H6v-2h12zm0-3H6V8h12zm0-3H6V5h12z"></path>
-              </svg>
-            </div>
-            <h3>Fast Response via WhatsApp</h3>
-            <p>Clients can inquire quickly, get answers fast, and move toward booking without friction.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt reveal" id="testimonials">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Testimonials</span>
-          <h2>Proof that the experience feels as good as the photos look.</h2>
-          <p>Stronger testimonials help remove hesitation and reassure clients that they are choosing a trusted professional.</p>
-        </div>
-        <div class="testimonials-grid">
-          <article class="testimonial">
-            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <p>The photos were breathtaking. Every image felt elegant, emotional, and intentional. We booked for our wedding and immediately knew we made the right choice.</p>
-            <strong>Amina &amp; Daniel</strong>
-            <span>Wedding Clients</span>
-          </article>
-          <article class="testimonial">
-            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <p>The portrait session felt effortless from start to finish. The direction was clear, the energy was calm, and the final images looked premium enough for my brand launch.</p>
-            <strong>Chioma E.</strong>
-            <span>Portrait Client</span>
-          </article>
-          <article class="testimonial">
-            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <p>Fast replies, professional communication, and a final gallery that captured the atmosphere of our event perfectly. Guests kept asking who the photographer was.</p>
-            <strong>David O.</strong>
-            <span>Event Host</span>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal">
-      <div class="container">
-        <div class="cta-band">
-          <span class="eyebrow">Ready To Book?</span>
-          <h2>Ready to capture your special moment?</h2>
-          <p>Let&apos;s create something beautiful together with a session that feels premium, effortless, and worth remembering.</p>
-          <a class="btn btn-whatsapp" href="https://wa.me/2348012345678?text=Hello%2C%20I%27m%20ready%20to%20book%20a%20session." target="_blank" rel="noopener noreferrer">Chat on WhatsApp Now</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="contact">
-      <div class="container contact-wrap">
-        <div class="contact-card">
-          <span class="eyebrow">Contact</span>
-          <h2>Let&apos;s create photographs you&apos;ll be proud to keep forever.</h2>
-          <p>Reach out to book a portrait session, wedding date, studio shoot, or event coverage. Every inquiry is handled with clarity, speed, and a warm client-first experience.</p>
-          <div class="contact-actions">
-            <a class="btn btn-whatsapp" href="https://wa.me/2348012345678?text=Hello%2C%20I%27d%20like%20to%20book%20a%20photography%20session." target="_blank" rel="noopener noreferrer">Book on WhatsApp</a>
-            <a class="btn btn-secondary" href="#portfolio">View Portfolio</a>
-          </div>
-          <div class="contact-points">
-            <div class="contact-point">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6.62 10.79a15.91 15.91 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.24 1z"></path>
-              </svg>
-              WhatsApp booking with quick response
-            </div>
-            <div class="contact-point">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 2a9 9 0 0 0-9 9c0 7 9 13 9 13s9-6 9-13a9 9 0 0 0-9-9zm0 12.3A3.3 3.3 0 1 1 12 7.7a3.3 3.3 0 0 1 0 6.6z"></path>
-              </svg>
-              Available for weddings, portraits, and special events
-            </div>
-            <div class="contact-point">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 8a1 1 0 0 1 1 1v3.59l2.7 2.7a1 1 0 1 1-1.4 1.41l-3-3A1 1 0 0 1 11 13V9a1 1 0 0 1 1-1zm0-6a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path>
-              </svg>
-              Simple inquiry process and guided planning
-            </div>
+              <p>
+                Professional event imagery that highlights the energy, crowd,
+                glam, and most meaningful moments.
+              </p>
+            </article>
+            <article class="service-card">
+              <div class="service-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M21 5h-3.17L16 3H8L6.17 5H3a2 2 0 0 0-2 2v9a5 5 0 0 0 5 5h12a5 5 0 0 0 5-5V7a2 2 0 0 0-2-2zm-9 13a5 5 0 1 1 5-5 5 5 0 0 1-5 5z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Studio Sessions</h3>
+              <p>
+                Controlled lighting, refined posing, and clean editing for
+                timeless portraits and beauty campaigns.
+              </p>
+            </article>
           </div>
         </div>
-        <div class="contact-visual">
-          <img src="https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=1400&q=80" alt="Professional photographer holding a camera during a session">
-          <div class="visual-caption">
-            <strong>Luxury imagery with a human touch</strong>
-            <span>Thoughtful planning, calm direction, and polished delivery from start to finish.</span>
+      </section>
+
+      <section class="section reveal" id="makeup">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Makeup Services</span>
+            <h2>
+              Soft glam, bridal beauty, and polished looks for every special
+              occasion.
+            </h2>
+            <p>
+              Our makeup service is designed to feel luxurious, camera-ready,
+              and perfectly matched to your event, outfit, and final images.
+            </p>
+          </div>
+          <div class="makeup-grid">
+            <article class="service-card makeup-card">
+              <div class="makeup-image">
+                <img
+                  src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1200&q=80"
+                  alt="Bridal makeup look with soft glam finish"
+                />
+              </div>
+              <div class="makeup-copy">
+                <h3>Bridal Makeup</h3>
+                <p>
+                  Elegant bridal glam with radiant skin, refined detail, and a
+                  flawless finish that stays beautiful all day.
+                </p>
+              </div>
+            </article>
+            <article class="service-card makeup-card">
+              <div class="makeup-image">
+                <img
+                  src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1200&q=80"
+                  alt="Studio glam makeup with bold eyes and polished skin"
+                />
+              </div>
+              <div class="makeup-copy">
+                <h3>Studio Glam</h3>
+                <p>
+                  Camera-ready beauty for portraits, editorials, birthdays, and
+                  content shoots that need extra polish.
+                </p>
+              </div>
+            </article>
+            <article class="service-card makeup-card">
+              <div class="makeup-image">
+                <img
+                  src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=80"
+                  alt="Event makeup look with elegant full-face glam"
+                />
+              </div>
+              <div class="makeup-copy">
+                <h3>Event Makeup</h3>
+                <p>
+                  Sophisticated event looks for guests, celebrants, and special
+                  occasions where you want to look your absolute best.
+                </p>
+              </div>
+            </article>
           </div>
         </div>
+      </section>
+      <section class="section alt reveal" id="portfolio">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Portfolio</span>
+            <h2>
+              Photography and beauty work presented as one cohesive premium
+              experience.
+            </h2>
+            <p>
+              The gallery now mixes photography and makeup close-ups so clients
+              can instantly see the quality of both services in one place.
+            </p>
+          </div>
+          <div class="portfolio-grid">
+            <figure class="portfolio-item">
+              <img
+                src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1400&q=80"
+                alt="Wedding photography moment with bride and groom embracing"
+              />
+              <figcaption class="portfolio-overlay">
+                <span class="portfolio-tag">Photography</span>
+                <h3>Wedding Stories</h3>
+                <p>
+                  Emotional photography for the moments you never want to lose.
+                </p>
+              </figcaption>
+            </figure>
+            <figure class="portfolio-item">
+              <img
+                src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1200&q=80"
+                alt="Soft glam makeup close-up with radiant skin"
+              />
+              <figcaption class="portfolio-overlay">
+                <span class="portfolio-tag">Makeup</span>
+                <h3>Soft Glam Beauty</h3>
+                <p>
+                  Glowing skin, defined detail, and a graceful finish for any
+                  occasion.
+                </p>
+              </figcaption>
+            </figure>
+            <figure class="portfolio-item">
+              <img
+                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80"
+                alt="Bride posing elegantly for wedding photography"
+              />
+              <figcaption class="portfolio-overlay">
+                <span class="portfolio-tag">Photography</span>
+                <h3>Elegant Details</h3>
+                <p>
+                  Editorial wedding portraits styled with softness and
+                  precision.
+                </p>
+              </figcaption>
+            </figure>
+            <figure class="portfolio-item">
+              <img
+                src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1200&q=80"
+                alt="Studio glam makeup look with bold lashes and polished finish"
+              />
+              <figcaption class="portfolio-overlay">
+                <span class="portfolio-tag">Makeup</span>
+                <h3>Studio Glam</h3>
+                <p>
+                  Beauty looks designed to read beautifully both in person and
+                  on camera.
+                </p>
+              </figcaption>
+            </figure>
+            <figure class="portfolio-item">
+              <img
+                src="https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=1200&q=80"
+                alt="Photographer holding camera during a portrait session"
+              />
+              <figcaption class="portfolio-overlay">
+                <span class="portfolio-tag">Photography</span>
+                <h3>Portrait Direction</h3>
+                <p>
+                  Guided portraits with flattering angles, elegant light, and
+                  premium edits.
+                </p>
+              </figcaption>
+            </figure>
+            <figure class="portfolio-item">
+              <img
+                src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=80"
+                alt="Event makeup close-up with elegant nude tones"
+              />
+              <figcaption class="portfolio-overlay">
+                <span class="portfolio-tag">Makeup</span>
+                <h3>Event Beauty</h3>
+                <p>
+                  Sophisticated event makeup with soft feminine tones and
+                  camera-ready polish.
+                </p>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Why Choose Us</span>
+            <h2>Built to turn interest into confident bookings.</h2>
+            <p>
+              This experience is designed for clients who want beautiful glam
+              and premium visuals handled in one place.
+            </p>
+          </div>
+          <div class="value-grid">
+            <article class="value-card">
+              <div class="value-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M21 5h-3.17L16 3H8L6.17 5H3a2 2 0 0 0-2 2v9a5 5 0 0 0 5 5h12a5 5 0 0 0 5-5V7a2 2 0 0 0-2-2zm-9 13a5 5 0 1 1 5-5 5 5 0 0 1-5 5z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Professional Photography And Makeup In One Place</h3>
+              <p>
+                One trusted brand handles both your beauty and your images with
+                a consistent premium standard.
+              </p>
+            </article>
+            <article class="value-card">
+              <div class="value-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M3 13h8V3H3zm10 8h8v-8h-8zM3 21h8v-6H3zm10-10h8V3h-8z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Perfect For Weddings And Events</h3>
+              <p>
+                Ideal for brides, celebrants, portraits, and occasions where you
+                need to look polished and photographed beautifully.
+              </p>
+            </article>
+            <article class="value-card">
+              <div class="value-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 17H5V9h14z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Save Time With One Trusted Brand</h3>
+              <p>
+                Booking makeup and photography together keeps your planning
+                simpler, smoother, and more coordinated.
+              </p>
+            </article>
+            <article class="value-card">
+              <div class="value-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-2 11H6v-2h12zm0-3H6V8h12zm0-3H6V5h12z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Easy Booking Via WhatsApp</h3>
+              <p>
+                Ask questions, confirm availability, and secure your date
+                quickly without unnecessary back and forth.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt reveal" id="testimonials">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Testimonials</span>
+            <h2>
+              Proof that the experience feels as beautiful as the final result.
+            </h2>
+            <p>
+              Clients remember the calm process, the flawless glam, and the
+              polished images they receive.
+            </p>
+          </div>
+          <div class="testimonials-grid">
+            <article class="testimonial">
+              <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <p>
+                She handled both my makeup and photos perfectly. I looked
+                radiant all day, and every image from my wedding felt soft,
+                elegant, and unforgettable.
+              </p>
+              <strong>Amina &amp; Daniel</strong>
+              <span>Wedding Photography + Bridal Makeup</span>
+            </article>
+            <article class="testimonial">
+              <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <p>
+                I booked for studio glam and portraits, and the whole experience
+                felt luxurious. My makeup photographed beautifully and the final
+                portraits looked high-end.
+              </p>
+              <strong>Chioma E.</strong>
+              <span>Portrait + Studio Glam Client</span>
+            </article>
+            <article class="testimonial">
+              <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <p>
+                Booking one team for makeup and photography saved me so much
+                stress. The glam was flawless, the photos were stunning, and
+                everything felt beautifully coordinated.
+              </p>
+              <strong>David O.</strong>
+              <span>Event Client</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="container">
+          <div class="cta-band">
+            <span class="eyebrow">Ready To Book?</span>
+            <h2>Ready to look and feel your best?</h2>
+            <p>
+              Let&apos;s handle your photography and makeup beautifully with one
+              seamless premium experience.
+            </p>
+            <a
+              class="btn btn-whatsapp"
+              href="https://wa.me/2348012345678?text=Hello%2C%20I%27m%20ready%20to%20book%20photography%20and%20makeup."
+              target="_blank"
+              rel="noopener noreferrer"
+              >Chat on WhatsApp</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="contact">
+        <div class="container contact-wrap">
+          <div class="contact-card">
+            <span class="eyebrow">Contact</span>
+            <h2>
+              Let&apos;s create a look and a gallery you&apos;ll feel proud of
+              forever.
+            </h2>
+            <p>
+              Reach out to book photography, makeup, or both for weddings,
+              portraits, birthdays, studio sessions, and special events. Every
+              inquiry is handled with clarity, speed, and warm premium care.
+            </p>
+            <div class="contact-actions">
+              <a
+                class="btn btn-whatsapp"
+                href="https://wa.me/2348012345678?text=Hello%2C%20I%27d%20like%20to%20book%20photography%20and%20makeup%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Book on WhatsApp</a
+              >
+              <a class="btn btn-secondary" href="#portfolio">View Portfolio</a>
+            </div>
+            <div class="contact-points">
+              <div class="contact-point">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M6.62 10.79a15.91 15.91 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.24 1z"
+                  ></path>
+                </svg>
+                Easy WhatsApp booking with quick response
+              </div>
+              <div class="contact-point">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2a9 9 0 0 0-9 9c0 7 9 13 9 13s9-6 9-13a9 9 0 0 0-9-9zm0 12.3A3.3 3.3 0 1 1 12 7.7a3.3 3.3 0 0 1 0 6.6z"
+                  ></path>
+                </svg>
+                Available for photography, bridal makeup, and special events
+              </div>
+              <div class="contact-point">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 8a1 1 0 0 1 1 1v3.59l2.7 2.7a1 1 0 1 1-1.4 1.41l-3-3A1 1 0 0 1 11 13V9a1 1 0 0 1 1-1zm0-6a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"
+                  ></path>
+                </svg>
+                One coordinated process for beauty, booking, and final delivery
+              </div>
+            </div>
+          </div>
+          <div class="contact-visual">
+            <img
+              src="https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=1400&q=80"
+              alt="Woman with elegant makeup look prepared for photography"
+            />
+            <div class="visual-caption">
+              <strong>Beauty and imagery designed together</strong>
+              <span
+                >Thoughtful makeup, calm direction, and polished delivery from
+                start to finish.</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <a
+      class="floating-whatsapp"
+      href="https://wa.me/2348012345678?text=Hello%2C%20I%27m%20interested%20in%20booking%20photography%20and%20makeup%20services."
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat on WhatsApp"
+    >
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path
+          d="M19.11 17.21c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.31.2-.58.07-.27-.14-1.13-.42-2.15-1.34-.79-.7-1.33-1.57-1.49-1.84-.16-.27-.02-.42.12-.55.12-.12.27-.31.41-.47.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.47-.07-.14-.61-1.48-.84-2.03-.22-.53-.44-.46-.61-.46h-.52c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.81c.14.18 1.91 2.92 4.63 4.1.65.28 1.15.45 1.55.58.65.2 1.25.17 1.72.1.52-.08 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32zM16.04 4C9.44 4 4.09 9.35 4.09 15.95c0 2.11.55 4.18 1.6 6L4 28l6.26-1.64a11.91 11.91 0 0 0 5.78 1.48h.01c6.59 0 11.95-5.36 11.95-11.95C28 9.35 22.64 4 16.04 4zm0 21.88h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.71.97.99-3.62-.23-.37a9.89 9.89 0 0 1-1.52-5.27C6.15 10.43 10.47 6.1 16.04 6.1c5.56 0 9.89 4.33 9.89 9.89 0 5.56-4.33 9.89-9.89 9.89z"
+        ></path>
+      </svg>
+      <span>WhatsApp</span>
+    </a>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 Chroma Studio. All rights reserved.</p>
       </div>
-    </section>
-  </main>
-  <a class="floating-whatsapp" href="https://wa.me/2348012345678?text=Hello%2C%20I%27m%20interested%20in%20booking%20a%20session." target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M19.11 17.21c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.31.2-.58.07-.27-.14-1.13-.42-2.15-1.34-.79-.7-1.33-1.57-1.49-1.84-.16-.27-.02-.42.12-.55.12-.12.27-.31.41-.47.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.47-.07-.14-.61-1.48-.84-2.03-.22-.53-.44-.46-.61-.46h-.52c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.81c.14.18 1.91 2.92 4.63 4.1.65.28 1.15.45 1.55.58.65.2 1.25.17 1.72.1.52-.08 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32zM16.04 4C9.44 4 4.09 9.35 4.09 15.95c0 2.11.55 4.18 1.6 6L4 28l6.26-1.64a11.91 11.91 0 0 0 5.78 1.48h.01c6.59 0 11.95-5.36 11.95-11.95C28 9.35 22.64 4 16.04 4zm0 21.88h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.71.97.99-3.62-.23-.37a9.89 9.89 0 0 1-1.52-5.27C6.15 10.43 10.47 6.1 16.04 6.1c5.56 0 9.89 4.33 9.89 9.89 0 5.56-4.33 9.89-9.89 9.89z"></path>
-    </svg>
-    <span>WhatsApp</span>
-  </a>
+    </footer>
 
-  <footer>
-    <div class="container">
-      <p>&copy; 2026 Chroma Studio. All rights reserved.</p>
-    </div>
-  </footer>
+    <script>
+      window.addEventListener("load", function () {
+        document.body.classList.add("loaded");
+      });
 
-  <script>
-    window.addEventListener("load", function () {
-      document.body.classList.add("loaded");
-    });
+      const topbar = document.querySelector(".topbar");
+      const revealItems = document.querySelectorAll(".reveal");
 
-    const topbar = document.querySelector(".topbar");
-    const revealItems = document.querySelectorAll(".reveal");
-
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > 18) {
-        topbar.classList.add("scrolled");
-      } else {
-        topbar.classList.remove("scrolled");
-      }
-    });
-
-    const observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 18) {
+          topbar.classList.add("scrolled");
+        } else {
+          topbar.classList.remove("scrolled");
         }
       });
-    }, {
-      threshold: 0.16
-    });
 
-    revealItems.forEach(function (item) {
-      observer.observe(item);
-    });
-  </script>
-</body>
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.16,
+        },
+      );
+
+      revealItems.forEach(function (item) {
+        observer.observe(item);
+      });
+    </script>
+  </body>
 </html>
-
